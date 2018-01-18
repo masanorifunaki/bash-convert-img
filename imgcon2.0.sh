@@ -33,8 +33,9 @@ END
                     printf '%s\n' "${SCRIPT_NAME}: '$file': 変換できないファイルです。" >> ${dirConvertFolder}_error.txt
                     continue
                 fi
-                # CYMKからRGBへの変換ができないので原因調査
-                sips -s profile "/System/Library/ColorSync/Profiles/Generic RGB Profile.icc" "${file}.jpg" 2>> ${dirConvertFolder}_error.txt | printf '%s\n' "${SCRIPT_NAME}: '$file': カラープロファイルが変換できないファイルです" >> ${dirConvertFolder}_error.txt
+                # TODO CYMKからRGBへの変換ができないので原因調査
+                # TODO エラー出力の方法他に良い方法がないか調べる
+                sips -s profile "/System/Library/ColorSync/Profiles/Generic RGB Profile.icc" "${file}.jpg" 2>> ${dirConvertFolder}_error.txt ${file} >> ${dirConvertFolder}_error.txt 
                 mv ${file}.jpg ${dirConvertFolder}
             ;;
         esac
