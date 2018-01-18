@@ -27,14 +27,14 @@ END
                 mv -f $file ${dirConvertFolder}
             ;;
             *)
-                convert $file -quality 100 $file.jpg 2>> ${dirConvertFolder}_error.txt
+                convert $file -quality 100 $file.jpg 2>> /dev/null
                   #変換できないファイルは飛ばす
                 if [[ $? -ne 0 ]]; then
                     printf '%s\n' "${SCRIPT_NAME}: '$file': 変換できないファイルです。" >> ${dirConvertFolder}_error.txt
                     continue
                 fi
                 # CYMKからRGBへの変換ができないので原因調査
-                sips -s profile "/System/Library/ColorSync/Profiles/Generic RGB Profile.icc" "${file}.jpg"
+                sips -s profile "/System/Library/ColorSync/Profiles/Generic RGB Profile.icc" "${file}.jpg" 2>> ${dirConvertFolder}_error.txt | printf '%s\n' "${SCRIPT_NAME}: '$file': カラープロファイルが変換できないファイルです" >> ${dirConvertFolder}_error.txt
                 mv ${file}.jpg ${dirConvertFolder}
             ;;
         esac
