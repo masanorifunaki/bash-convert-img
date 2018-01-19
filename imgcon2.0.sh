@@ -28,6 +28,10 @@ END
             ;;
             *.??? | *.??)
                 convert $file -quality 100 $file.jpg 2>> /dev/null
+                if [[ $? -ne 0 ]]; then
+                    printf '%s\n' "${SCRIPT_NAME}: '$file': 変換できないファイルです。" >> ${dirConvertFolder}_error.txt
+                    continue
+                fi
                 # TODO CYMKからRGBへの変換ができないので原因調査
                 # TODO エラー出力の方法他に良い方法がないか調べる
                 sips -s profile "/System/Library/ColorSync/Profiles/Generic RGB Profile.icc" "${file}.jpg" >> ${dirConvertFolder}_profile.txt 2>&1
